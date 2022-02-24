@@ -169,12 +169,6 @@
   //   }); // should be 5, regardless of the iterator function passed in
   //          No accumulator is given so the first element is used.
   _.reduce = function(collection, iterator, accumulator) {
-    //input: collection, with an optional accumulator
-    //output: accumulated value / object
-    //constraints: none
-    //edge cases: if an accumulator is provided or not
-    //if there is no accumulator, set a variable equal to false(noAcc).
-    //then do this:
     var hasAccumulator = true;
     if(accumulator === undefined) {
       hasAccumulator = false;
@@ -206,12 +200,20 @@
   // Determine whether all of the elements match a truth test.
   _.every = function(collection, iterator) {
     // TIP: Try re-using reduce() here.
+    iterator = iterator || _.identity;
+    return _.reduce(collection, function(accumulator, item) {
+      return accumulator && Boolean(iterator(item));
+    }, true);
   };
 
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
+    iterator = iterator || _.identity;
+    return !_.every(collection, function(item) {
+      return !iterator(item);
+    });
   };
 
 
